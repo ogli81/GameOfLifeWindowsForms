@@ -63,6 +63,8 @@ namespace GameOfLifeWindowsForms
         /// </summary>
         //List<decimal> LifeStats { get; }
         //TODO: should be compatible with LiveCharts!
+        //[AllowNull] //<--- not available in my version of .Net :-(
+        //public LinkedList<decimal> LifeStats => stats1;
 
         /// <summary>
         /// Calculate the next "generation". Will advance the CurrentGen by +1.

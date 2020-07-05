@@ -37,12 +37,7 @@ namespace GameOfLifeWindowsForms.RingBuffer3D
         /// <param name="y">number of cells in y direction (3rd dimension)</param>
         protected AbstractRingBuffer3D(int mem, int x, int y)
         {
-            if (mem < 2)
-                throw new ArgumentException("please give us at least 2 memory slots!");
-            if (x < 1)
-                throw new ArgumentException("x can't be less than 1!");
-            if (y < 1)
-                throw new ArgumentException("y can't be less than 1!");
+            SafetyCheckNewRingBuffer(mem, x, y);
             newestGenPos = 0;
             oldestGenPos = 0;
 
@@ -53,6 +48,15 @@ namespace GameOfLifeWindowsForms.RingBuffer3D
 
 
         //helper methods:
+
+        protected void BoundsCheck(int x, int y)
+        {
+            //usually you want these checks only in DEBUG, not in RELEASE...
+            if (x < 0) throw new ArgumentException("x can't be less than zero!");
+            if (x >= CellsX) throw new ArgumentException($"x can't be >= {CellsX}");
+            if (y < 0) throw new ArgumentException("y can't be less than zero!");
+            if (y >= CellsY) throw new ArgumentException($"y can't be >= {CellsY}");
+        }
 
         protected void MoveForward()
         {
@@ -80,6 +84,22 @@ namespace GameOfLifeWindowsForms.RingBuffer3D
 
 
         //public methods:
+
+        /// <summary>
+        /// Will throw an exception if any of these three values violates our rules. 
+        /// The rules are as follows: <br></br>
+        /// 'mem' should be >= 2 <br></br>
+        /// 'x' and 'y' should be >= 1
+        /// </summary>
+        /// <param name="mem">number of memory slots in the ring buffer (1st dimension)</param>
+        /// <param name="x">number of cells in x direction (2nd dimension)</param>
+        /// <param name="y">number of cells in y direction (3rd dimension)</param>
+        public static void SafetyCheckNewRingBuffer(int mem, int x, int y)
+        {
+            if (mem < 2) throw new ArgumentException("please give us at least 2 memory slots!");
+            if (x < 1) throw new ArgumentException("x can't be less than 1!");
+            if (y < 1) throw new ArgumentException("y can't be less than 1!");
+        }
 
         /// <summary>
         /// The number of memory slots in this ring buffer (1st dim).
